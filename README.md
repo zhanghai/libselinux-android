@@ -1,6 +1,6 @@
 # libselinux-android
 
-[`libselinux`](https://android.googlesource.com/platform/external/libselinux/) built with Android NDK, packaged as an Android library with some Java binding.
+[`libselinux`](https://android.googlesource.com/platform/external/selinux/+/refs/heads/master/libselinux/) built with Android NDK, packaged as an Android library with some Java binding.
 
 ## Integration
 
