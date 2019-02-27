@@ -1,0 +1,6 @@
+[submodule "library/src/main/native/external/selinux"]
+	path = library/src/main/native/external/selinux
+	url = https://android.googlesource.com/platform/external/selinux
+[submodule "library/src/main/native/external/pcre"]
+	path = library/src/main/native/external/pcre
+	url = https://android.googlesource.com/platform/external/pcre
