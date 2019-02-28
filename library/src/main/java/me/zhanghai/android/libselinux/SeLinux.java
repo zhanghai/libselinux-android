@@ -30,13 +30,13 @@ public class SeLinux {
     }
 
     @NonNull
-    public static native String getfilecon(@NonNull String path) throws ErrnoException;
-
-    @NonNull
     public static native String fgetfilecon(@NonNull FileDescriptor fd) throws ErrnoException;
 
     public static native void fsetfilecon(@NonNull FileDescriptor fd, @NonNull String context)
             throws ErrnoException;
+
+    @NonNull
+    public static native String getfilecon(@NonNull String path) throws ErrnoException;
 
     public static native boolean is_selinux_enabled();
 
