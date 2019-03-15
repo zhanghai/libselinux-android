@@ -3,7 +3,7 @@
  #include <stdio.h>
  #include <stdio_ext.h>
 +#if __ANDROID_API__ < 23
-+int __fsetlocking(FILE* __fp, int __type) {
++static int __fsetlocking(FILE* __fp, int __type) {
 +	return FSETLOCKING_INTERNAL;
 +}
 +#endif
