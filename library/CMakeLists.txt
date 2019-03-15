@@ -45,7 +45,7 @@ target_include_directories(pcre2
 # no-op implementation to compile.
 set(SELINUX_INIT_C_INPUT src/main/native/external/selinux/libselinux/src/init.c)
 set(SELINUX_INIT_C_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/init_patched.c")
-set(SELINUX_INIT_C_PATCH src/main/native/init.patch)
+set(SELINUX_INIT_C_PATCH src/main/native/init.c.patch)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(Patch REQUIRED)
 add_custom_command(OUTPUT "${SELINUX_INIT_C_OUTPUT}"
