@@ -80,14 +80,6 @@ static jfieldID getFileDescriptorDescriptorField(JNIEnv *env) {
     return fileDescriptorDescriptorField;
 }
 
-static jclass getStringClass(JNIEnv *env) {
-    static jclass stringClass = NULL;
-    if (!stringClass) {
-        stringClass = findClass(env, "java/lang/String");
-    }
-    return stringClass;
-}
-
 static void throwException(JNIEnv *env, jclass exceptionClass, jmethodID constructor3,
                            jmethodID constructor2, const char *functionName, int error) {
     jthrowable cause = NULL;
