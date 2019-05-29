@@ -30,24 +30,24 @@ public class SeLinux {
     }
 
     @NonNull
-    public static native String fgetfilecon(@NonNull FileDescriptor fd) throws ErrnoException;
+    public static native byte[] fgetfilecon(@NonNull FileDescriptor fd) throws ErrnoException;
 
-    public static native void fsetfilecon(@NonNull FileDescriptor fd, @NonNull String context)
+    public static native void fsetfilecon(@NonNull FileDescriptor fd, @NonNull byte[] context)
             throws ErrnoException;
 
     @NonNull
-    public static native String getfilecon(@NonNull String path) throws ErrnoException;
+    public static native byte[] getfilecon(@NonNull byte[] path) throws ErrnoException;
 
     public static native boolean is_selinux_enabled();
 
     @NonNull
-    public static native String lgetfilecon(@NonNull String path) throws ErrnoException;
+    public static native byte[] lgetfilecon(@NonNull byte[] path) throws ErrnoException;
 
-    public static native void lsetfilecon(@NonNull String path, @NonNull String context)
+    public static native void lsetfilecon(@NonNull byte[] path, @NonNull byte[] context)
             throws ErrnoException;
 
     public static native boolean security_getenforce() throws ErrnoException;
 
-    public static native void setfilecon(@NonNull String path, @NonNull String context)
+    public static native void setfilecon(@NonNull byte[] path, @NonNull byte[] context)
             throws ErrnoException;
 }

@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 
         String text;
         try {
-            text = SeLinux.lgetfilecon("/");
+            text = new String(SeLinux.lgetfilecon("/".getBytes()));
         } catch (ErrnoException e) {
             text = e.getMessage();
         }

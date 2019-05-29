@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <jni.h>
 
@@ -127,7 +128,30 @@ static void throwErrnoException(JNIEnv* env, const char* functionName) {
                    error);
 }
 
-JNIEXPORT jstring JNICALL
+static char *mallocStringFromBytes(JNIEnv *env, jbyteArray javaBytes) {
+    const void *bytes = (*env)->GetByteArrayElements(env, javaBytes, NULL);
+    jsize javaLength = (*env)->GetArrayLength(env, javaBytes);
+    size_t length = (size_t) javaLength;
+    char *string = malloc(length + 1);
+    memcpy(string, bytes, length);
+    (*env)->ReleaseByteArrayElements(env, javaBytes, bytes, JNI_ABORT);
+    string[length] = '\0';
+    return string;
+}
+
+static jbyteArray newBytesFromString(JNIEnv *env, const char *string) {
+    size_t length = strlen(string);
+    jsize javaLength = (jsize) length;
+    jbyteArray javaBytes = (*env)->NewByteArray(env, javaLength);
+    if (!javaBytes) {
+        return NULL;
+    }
+    const void *stringBytes = string;
+    (*env)->SetByteArrayRegion(env, javaBytes, 0, javaLength, stringBytes);
+    return javaBytes;
+}
+
+JNIEXPORT jbyteArray JNICALL
 Java_me_zhanghai_android_libselinux_SeLinux_fgetfilecon(
         JNIEnv *env, jclass clazz, jobject javaFd) {
     int fd = (*env)->GetIntField(env, javaFd, getFileDescriptorDescriptorField(env));
@@ -137,41 +161,40 @@ Java_me_zhanghai_android_libselinux_SeLinux_fgetfilecon(
         throwErrnoException(env, "fgetfilecon");
         return NULL;
     }
-    jstring javaContext = (*env)->NewStringUTF(env, context);
+    jbyteArray javaContext = newBytesFromString(env, context);
     freecon(context);
     return javaContext;
 }
 
 JNIEXPORT void JNICALL
 Java_me_zhanghai_android_libselinux_SeLinux_fsetfilecon(
-        JNIEnv *env, jclass clazz, jobject javaFd, jstring javaContext) {
+        JNIEnv *env, jclass clazz, jobject javaFd, jbyteArray javaContext) {
     int fd = (*env)->GetIntField(env, javaFd, getFileDescriptorDescriptorField(env));
-    security_context_t context = (security_context_t) (*env)->GetStringUTFChars(env, javaContext,
-            NULL);
+    security_context_t context = mallocStringFromBytes(env, javaContext);
     TEMP_FAILURE_RETRY(fsetfilecon(fd, context));
-    (*env)->ReleaseStringUTFChars(env, javaContext, context);
+    free(context);
     if (errno) {
         throwErrnoException(env, "fsetfilecon");
     }
 }
 
-static jstring doGetfilecon(JNIEnv *env, jstring javaPath, bool isLgetfilecon) {
-    const char *path = (*env)->GetStringUTFChars(env, javaPath, NULL);
+static jbyteArray doGetfilecon(JNIEnv *env, jbyteArray javaPath, bool isLgetfilecon) {
+    char *path = mallocStringFromBytes(env, javaPath);
     security_context_t context = NULL;
     TEMP_FAILURE_RETRY((isLgetfilecon ? lgetfilecon : getfilecon)(path, &context));
-    (*env)->ReleaseStringUTFChars(env, javaPath, path);
+    free(path);
     if (errno) {
         throwErrnoException(env, isLgetfilecon ? "lgetfilecon" : "getfilecon");
         return NULL;
     }
-    jstring javaContext = (*env)->NewStringUTF(env, context);
+    jbyteArray javaContext = newBytesFromString(env, context);
     freecon(context);
     return javaContext;
 }
 
-JNIEXPORT jstring JNICALL
+JNIEXPORT jbyteArray JNICALL
 Java_me_zhanghai_android_libselinux_SeLinux_getfilecon(
-        JNIEnv *env, jclass clazz, jstring javaPath) {
+        JNIEnv *env, jclass clazz, jbyteArray javaPath) {
     return doGetfilecon(env, javaPath, false);
 }
 
@@ -183,19 +206,19 @@ Java_me_zhanghai_android_libselinux_SeLinux_is_1selinux_1enabled(
     return javaEnabled;
 }
 
-JNIEXPORT jstring JNICALL
+JNIEXPORT jbyteArray JNICALL
 Java_me_zhanghai_android_libselinux_SeLinux_lgetfilecon(
-        JNIEnv *env, jclass clazz, jstring javaPath) {
+        JNIEnv *env, jclass clazz, jbyteArray javaPath) {
     return doGetfilecon(env, javaPath, true);
 }
 
-static void doSetfilecon(JNIEnv *env, jstring javaPath, jstring javaContext, bool isLsetfilecon) {
-    const char *path = (*env)->GetStringUTFChars(env, javaPath, NULL);
-    security_context_t context = (security_context_t) (*env)->GetStringUTFChars(env, javaContext,
-            NULL);
+static void doSetfilecon(JNIEnv *env, jbyteArray javaPath, jbyteArray javaContext,
+        bool isLsetfilecon) {
+    char *path = mallocStringFromBytes(env, javaPath);
+    security_context_t context = mallocStringFromBytes(env, javaContext);
     TEMP_FAILURE_RETRY((isLsetfilecon ? lsetfilecon : setfilecon)(path, context));
-    (*env)->ReleaseStringUTFChars(env, javaPath, path);
-    (*env)->ReleaseStringUTFChars(env, javaContext, context);
+    free(path);
+    free(context);
     if (errno) {
         throwErrnoException(env, isLsetfilecon ? "lsetfilecon" : "setfilecon");
     }
@@ -203,7 +226,7 @@ static void doSetfilecon(JNIEnv *env, jstring javaPath, jstring javaContext, boo
 
 JNIEXPORT void JNICALL
 Java_me_zhanghai_android_libselinux_SeLinux_lsetfilecon(
-        JNIEnv *env, jclass clazz, jstring javaPath, jstring javaContext) {
+        JNIEnv *env, jclass clazz, jbyteArray javaPath, jbyteArray javaContext) {
     doSetfilecon(env, javaPath, javaContext, true);
 }
 
@@ -225,6 +248,6 @@ Java_me_zhanghai_android_libselinux_SeLinux_security_1getenforce(
 
 JNIEXPORT void JNICALL
 Java_me_zhanghai_android_libselinux_SeLinux_setfilecon(
-        JNIEnv *env, jclass clazz, jstring javaPath, jstring javaContext) {
+        JNIEnv *env, jclass clazz, jbyteArray javaPath, jbyteArray javaContext) {
     doSetfilecon(env, javaPath, javaContext, false);
 }
