@@ -121,7 +121,7 @@ static void throwErrnoException(JNIEnv* env, const char* functionName) {
 }
 
 static char *mallocStringFromBytes(JNIEnv *env, jbyteArray javaBytes) {
-    const void *bytes = (*env)->GetByteArrayElements(env, javaBytes, NULL);
+    void *bytes = (*env)->GetByteArrayElements(env, javaBytes, NULL);
     jsize javaLength = (*env)->GetArrayLength(env, javaBytes);
     size_t length = (size_t) javaLength;
     char *string = malloc(length + 1);
