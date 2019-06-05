@@ -1,13 +1,10 @@
 /*
- * Copyright (c) 2019 Hai Zhang <dreaming.in.code.zh@gmail.com>
+ * Copyright (c) 2018 Hai Zhang <dreaming.in.code.zh@gmail.com>
  * All Rights Reserved.
  */
 
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-
-group = GROUP
-version = VERSION_NAME
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
