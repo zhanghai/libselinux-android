@@ -1,13 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 30
+    ndkVersion '22.1.7171670'
+    buildToolsVersion '30.0.3'
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode Integer.parseInt(VERSION_CODE)
-        versionName VERSION
+        versionName VERSION_NAME
         consumerProguardFiles 'proguard-rules.pro'
     }
     compileOptions {
@@ -27,15 +28,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.0.2'
+    implementation 'androidx.annotation:annotation:1.2.0'
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-    }
-}
-apply from: '../bintray-android.gradle'
+apply plugin: 'com.vanniktech.maven.publish'
