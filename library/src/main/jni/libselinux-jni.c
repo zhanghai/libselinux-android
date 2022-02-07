@@ -33,13 +33,17 @@
 
 static jclass findClass(JNIEnv *env, const char *name) {
     jclass localClass = (*env)->FindClass(env, name);
-    jclass result = (*env)->NewGlobalRef(env, localClass);
-    (*env)->DeleteLocalRef(env, localClass);
-    if (!result) {
+    if (!localClass) {
         ALOGE("Failed to find class '%s'", name);
         abort();
     }
-    return result;
+    jclass globalClass = (*env)->NewGlobalRef(env, localClass);
+    (*env)->DeleteLocalRef(env, localClass);
+    if (!globalClass) {
+        ALOGE("Failed to create a global reference for '%s'", name);
+        abort();
+    }
+    return globalClass;
 }
 
 static jfieldID findField(JNIEnv *env, jclass clazz, const char *name, const char *signature) {
