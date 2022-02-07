@@ -7,7 +7,7 @@
 Gradle:
 
 ```gradle
-implementation 'me.zhanghai.android.libselinux:library:2.0.1'
+implementation 'me.zhanghai.android.libselinux:library:2.1.0'
 ```
 
 ## Usage
