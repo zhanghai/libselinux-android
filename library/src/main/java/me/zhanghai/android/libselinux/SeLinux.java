@@ -6,7 +6,6 @@
 package me.zhanghai.android.libselinux;
 
 import android.system.ErrnoException;
-import android.system.Os;
 
 import java.io.FileDescriptor;
 
@@ -14,20 +13,11 @@ import androidx.annotation.NonNull;
 
 public class SeLinux {
 
-    private static final String LIBRARY_NAME = "selinux-jni";
-
     static {
-        if (Os.getuid() != 0) {
-            System.loadLibrary(LIBRARY_NAME);
-        }
+        System.loadLibrary("selinux-jni");
     }
 
     private SeLinux() {}
-
-    @NonNull
-    public static String getLibraryName() {
-        return LIBRARY_NAME;
-    }
 
     @NonNull
     public static native byte[] fgetfilecon(@NonNull FileDescriptor fd) throws ErrnoException;
