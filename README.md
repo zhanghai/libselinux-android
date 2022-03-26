@@ -1,5 +1,7 @@
 # libselinux-android
 
+[![Android CI status](https://github.com/zhanghai/libselinux-android/workflows/Android%20CI/badge.svg)](https://github.com/zhanghai/libselinux-android/actions)
+
 [`libselinux`](https://android.googlesource.com/platform/external/selinux/+/refs/heads/master/libselinux/) built with Android NDK, packaged as an Android library with some Java binding.
 
 ## Integration
