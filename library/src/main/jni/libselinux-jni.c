@@ -20,7 +20,7 @@
 #define ALOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define ALOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
-#define LOG_TAG "libselinux-binding"
+#define LOG_TAG "libselinux-jni"
 
 #undef TEMP_FAILURE_RETRY
 #define TEMP_FAILURE_RETRY(exp) ({ \
