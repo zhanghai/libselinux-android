@@ -1,4 +1,15 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.22.1)
+
+project(libselinux-android
+        LANGUAGES C)
+# CMAKE_INTERPROCEDURAL_OPTIMIZATION sets -fuse-ld=gold and -flto=thin.
+#set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+add_compile_options(
+        -fdata-sections
+        -ffunction-sections
+        -flto)
+add_link_options(
+        LINKER:--gc-sections)
 
 # https://android.googlesource.com/platform/external/pcre/+/refs/heads/master/Android.bp
 add_library(pcre2 STATIC
@@ -113,6 +124,7 @@ target_compile_options(selinux
         -Wno-error=missing-noreturn
         -Wno-error=unused-function
         -Wno-error=unused-variable
+        -Wno-error=unused-but-set-variable
         # libselinux
         -DUSE_PCRE2)
 target_include_directories(selinux
