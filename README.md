@@ -9,7 +9,7 @@
 Gradle:
 
 ```gradle
-implementation 'me.zhanghai.android.libselinux:library:2.1.0'
+implementation 'me.zhanghai.android.libselinux:library:2.1.1'
 ```
 
 ## Usage
