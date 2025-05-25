@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion '32.0.0'
+    namespace 'me.zhanghai.android.libselinux.sample'
+    buildToolsVersion = '36.0.0'
+    compileSdk 36
     defaultConfig {
         applicationId 'me.zhanghai.android.libselinux.sample'
-        minSdkVersion 21
-        targetSdkVersion 31
+        minSdk 21
+        targetSdk 36
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
     }
@@ -17,11 +18,13 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
     implementation project(':library')
+    implementation 'androidx.annotation:annotation:1.9.1'
 }

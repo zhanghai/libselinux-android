@@ -11,12 +11,13 @@ import android.system.ErrnoException;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import me.zhanghai.android.libselinux.SeLinux;
 
 public class MainActivity extends Activity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         String text;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
         }
 
         TextView textView = new TextView(this);
+        textView.setFitsSystemWindows(true);
         textView.setText(text);
         setContentView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));

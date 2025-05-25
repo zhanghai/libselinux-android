@@ -1,15 +1,19 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 31
-    ndkVersion '23.1.7779620'
-    buildToolsVersion '32.0.0'
+    namespace 'me.zhanghai.android.libselinux'
+    buildToolsVersion = '36.0.0'
+    compileSdk 36
+    ndkVersion '28.1.13356709'
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 31
-        versionCode Integer.parseInt(VERSION_CODE)
-        versionName VERSION_NAME
+        minSdk 21
+        targetSdk 36
         consumerProguardFiles 'proguard-rules.pro'
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=none'
+            }
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -28,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.3.0'
+    implementation 'androidx.annotation:annotation:1.9.1'
 }
 
 apply plugin: 'com.vanniktech.maven.publish'

@@ -5,9 +5,7 @@
   ~ All Rights Reserved.
   -->
 
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.zhanghai.android.libselinux.sample">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
